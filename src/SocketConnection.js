@@ -2,41 +2,41 @@
 export class Client{
      constructor(socket){// always must use this.socket for everything and every function
         this.socket = socket;
-        this.sateChangeCallbacks = {};// state change callbacks is a list of call backs that contain state change objects to be used when the server needs to make a state change, the list is made in App.jsx
+        this.stateChangeCallbacks = {};// state change callbacks is a list of call backs that contain state change objects to be used when the server needs to make a state change, the list is made in App.jsx
         
          this.connected();
 
          this.socket.emit('joinRoom', ("ABC"));// when you actually implment this only call the constructor when you have the room code they put in from the lobby page
 
          this.socket.on('setPlayerNum', (playerNum) => {
-            this.sateChangeCallbacks.setPlayerNumber(playerNum);
+            this.stateChangeCallbacks.setPlayerNumber(playerNum);
          });// end setPlayerNum
 
          this.socket.on('bankButtonPressedServer', (state)=>{
-            this.sateChangeCallbacks.onBankButtonPressed(state);
+            this.stateChangeCallbacks.onBankButtonPressed(state);
          });// end socket.on function
 
          this.socket.on('newDice', (data) =>{// general purpose new dice handler used for both rerolls and syncing dice selection because they both remake and send the whole dice array. Selected dice ui uses die.selected var
-            this.sateChangeCallbacks.onNewDice(data.dice, data.pendingScore, data.hasRolled, data.hasBusted, data.playersRound);
+            this.stateChangeCallbacks.onNewDice(data.dice, data.pendingScore, data.hasRolled, data.hasBusted, data.playersRound);
          });// end newDice update function
 
          this.socket.on('returnHandleBanking', (data) =>{
-            this.sateChangeCallbacks.returnHandleBanking(data.bankedDice, data.roundScore);
+            this.stateChangeCallbacks.returnHandleBanking(data.bankedDice, data.roundScore);
          });
 
          this.socket.on('endRoundBankResponse', (data) => {
-            this.sateChangeCallbacks.returnHandleScore(data.bankedDice, data.newPlayerScore, data.playerScoring, data.playerOneScore, data.playerTwoScore, data.playersRound);
+            this.stateChangeCallbacks.returnHandleScore(data.bankedDice, data.newPlayerScore, data.playerScoring, data.playerOneScore, data.playerTwoScore, data.playersRound);
          });
 
          this.socket.on('newRoundStart', ()=>{
-            this.sateChangeCallbacks.newRoundStart();
+            this.stateChangeCallbacks.newRoundStart();
          });
          
      }
 
       addStateChangeCallback(methodName, method)
      {
-         this.sateChangeCallbacks[methodName] = method;
+         this.stateChangeCallbacks[methodName] = method;
      }
      
       connected()

@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import {Game} from './Game.jsx';
 import {Lobby} from './Lobby.jsx';
 import {Room} from './Room.jsx';
+import { SmokeBackground } from './Background.jsx';
 import './App.css'
 
 function App() 
@@ -33,7 +34,7 @@ function App()
     return (
       <BrowserRouter>
         <Routes>
-            <Route path='/' element={<Game clientConn={client.current}/>}/>
+            <Route path='/' element={<SmokeBackground/>}/>
         </Routes>
       </BrowserRouter>
     )
