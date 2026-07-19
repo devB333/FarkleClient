@@ -1,0 +1,246 @@
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --border: #e5e4e7;
+  --code-bg: #f4f3ec;
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-border: rgba(170, 59, 255, 0.5);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+}
+
+@keyframes textGlowRoundScore{
+  0% {
+    color: #61998e8a;
+    text-shadow:0 0 1px #32cfb031,
+  }
+
+  30% {
+    text-shadow: 
+      0 0 2.5px #32cfb0,
+      0 0 50px #32cfb0,
+      2px 2px 40px #21a88d;
+  }
+
+  100% {
+    text-shadow: 2px 2px 25px #21a88d;
+  }
+}
+
+@keyframes textGlowRoundScoreOut{
+  0% {
+    text-shadow: 2px 2px 25px #21a88d;
+  }
+
+  30% {
+    text-shadow: 
+      2px 2px 5px #21a88d;
+  }
+
+  100% {
+    color: #61998e8a;
+    text-shadow: none;
+  }
+}
+
+
+@keyframes textGlowRoll{
+  0% {
+    color: #61998e8a;
+    text-shadow:0 0 1px #32cfb031,
+  }
+
+  30% {
+    text-shadow: 
+      0 0 2.6px #32cfb0,
+      2px 2px 2.5px #21a88d;
+  }
+
+  100% {
+    text-shadow: 2px 2px 2.5px #21a88d;
+    color: #32cfb0;
+  }
+}
+
+@keyframes diePopIn
+{
+  0%{
+    transform: rotate(var(--rotation)) scale(0);
+    opacity: 0;
+  }
+
+  60%{
+    transform: rotate(var(--rotation)) scale(1.2);
+    opacity: 1;
+  }
+
+  100%{
+    transform: rotate(var(--rotation)) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes dieBankPopIn
+{
+  0%{
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  60%{
+    transform:  scale(1.2);
+    opacity: 1;
+  }
+
+  100%{
+    transform:  scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes textGlowRollOut{
+  0% {
+    text-shadow: 2px 2px 25px #32cfb0;
+  }
+
+  30% {
+    text-shadow: 
+      1px 1px 1px #2bc7a88a;
+  }
+
+  100% {
+    color: #61998e8a;
+    text-shadow: none;
+    
+  }
+}
+
+.press-start-2p-regular {
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --border: #2e303a;
+    --code-bg: #1f2028;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+
+  #social .button-icon {
+    filter: invert(1) brightness(2);
+  }
+}
+
+body {
+  margin: 0;
+  background-color:#6b6375;
+  padding: 0;
+}
+
+html{
+  margin: 0;
+  padding: 0;
+}
+
+.fixed-card {
+  --bs-card-height: 45% !important;
+}
+
+.lobbyInput{
+  margin: 1rem;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  text-align: center;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+}
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+p {
+  margin: 0;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: black;
+}
+
+.LobbyBtns{
+  padding: 10px;
+  margin: 10px;
+  background-color: #08060d;
+  border-color: #328373;
+  border-width: 5px;
+  border-radius: 15px;
+}
