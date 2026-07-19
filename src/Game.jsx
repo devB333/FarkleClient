@@ -978,6 +978,7 @@ function easeOutQuad(t) {// makes it faster when t is smaller and slower when t 
       {renderDice()}
     </div>
 
+<div>
     {/* scores + round score svg - fixed, compact */}
     <div id='bankBoxAndScore' style={{flex:'0 0 auto', aspectRatio: '15/7', width:'100%', position:'relative', overflow:'hidden', border: '1px solid black', paddingBottom: '0', display:'flex', flexDirection:'column'}}>
       <div style={{ flex: '0 0 auto', textAlign: 'center', margin: '0', position:'realtive'}}>
@@ -1010,7 +1011,9 @@ function easeOutQuad(t) {// makes it faster when t is smaller and slower when t 
       alignItems: 'center',
       gap: '15%',
       width: '100%',
-      marginTop: '8%'
+      marginTop: '8%',
+      
+      
     }}>
       <div id='topTwoBtns'style={{
       display:'flex', 
@@ -1137,7 +1140,7 @@ function easeOutQuad(t) {// makes it faster when t is smaller and slower when t 
         </div>
       </div>
     </div>
-
+</div>
   </div>
 )
 }

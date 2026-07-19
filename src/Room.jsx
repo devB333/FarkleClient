@@ -138,6 +138,13 @@ export function Room()
   return y;
 }
 
+function divBob(accleration,time, offset)
+{
+  const amp = 5;
+  const y = Math.sin(time * accleration + offset) * amp
+  return y;
+}
+
 function renderFloatingText(text,time)
 {
   return text.split('').map((char,i)=>{
@@ -165,24 +172,20 @@ const [createRoomPress, updateCreateRoomPress] = useState(false);
             }}>
                 {renderDisplayDice()}
             </div>
-            <div style={{ height:'100vh', width: '100vw', display:'flex', justifyContent: 'center', alignItems:'center', flexDirection: 'column', zIndex: '3', position:'relative'}}>
+            <div style={{ height:'100vh', width: '100vw', display:'flex', justifyContent: 'center', alignItems:'center', flexDirection: 'column', zIndex: '3', position:'relative', gap:'5vh'}}>
                 
                 <div>
                     <h1>{renderFloatingText("Farkle", time)}</h1>
                 </div>       
-                <div style={{display:'flex', flexDirection: 'row'}}>
-                    <input className="lobbyInput" type="text" placeholder="Name: (8 Char max)"/>
-                    <input className="lobbyInput" type="text" placeholder="Target Score"/>
+                
+                <div style={{display: 'flex', flexDirection:'row', gap:'15vw'}}>
+                  <h5 className="card-title" style={{fontFamily:"'Press Start 2P'", marginBottom:'15%', border:'10px solid #318071', padding: '10px', borderRadius:'25px', color:'ghostwhite', transform:`translate(${divBob(2, time, 3)}px,${divBob(0.5, time, 10)}px )`}}>Gertie</h5>
+                  <h5 className="card-title" style={{fontFamily:"'Press Start 2P'", marginBottom:'15%', border:'10px solid #318071', padding: '10px', borderRadius:'25px', color:'ghostwhite', transform:`translate(${divBob(2, time, 25)}px,${divBob(0.5, time, 10)}px )`}}>Dev</h5>
                 </div>
-                <div style={{display:'flex', flexDirection: 'row'}}>
-                    <input className="lobbyInput" type="text" placeholder="Room Code:"/>
-                </div>
-                <div style={{display:'flex', flexDirection: 'row', justifyContent:'cente', alignContent:'center'}}>
+
+                <div stlye={{display:'flex', flexDirection:'row'}}>
                   <button className='LobbyBtns'style={{fontFamily:"'Press Start 2P'"}}>
-                      Create Room
-                  </button>
-                  <button className='LobbyBtns' style={{fontFamily:"'Press Start 2P'"}}>
-                    Join Room
+                      Start Game
                   </button>
                 </div>
             </div>  
