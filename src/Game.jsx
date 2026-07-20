@@ -386,7 +386,7 @@ export function Game({ clientConn }) {
 
 
 
-
+  
 
   // this is what increments time and keeps track of the current ref frame
   useEffect(() => {
