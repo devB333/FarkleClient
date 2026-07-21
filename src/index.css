@@ -244,3 +244,16 @@ html, body {
   border-width: 5px;
   border-radius: 15px;
 }
+
+.curveBorder{
+  border-radius: 100px;
+  
+}
+
+.curveBorderRoll{
+  border-radius: 10px;
+}
+
+.curveBorderRound{
+  border-radius: 12px;
+}

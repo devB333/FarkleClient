@@ -5,6 +5,7 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import UpdateSelected from './ScoreBoard.jsx'
 import { Client } from './SocketConnection.js'
+import {SmokeBackground} from './Background.jsx'
 import './App.css'
 
 export function Game({ clientConn }) {
@@ -94,7 +95,7 @@ export function Game({ clientConn }) {
   function renderPips(die)// this is client side rendering so it can stay
   {
     return pipPositions[die.value].map(([centerX, centerY], i) => {
-      return <circle key={i} cx={centerX} cy={centerY} r={4} fill='orange' />
+      return <circle key={i} cx={centerX} cy={centerY} r={4} fill='#f5f5f5' />
     })
   }
 
@@ -689,7 +690,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
               pointerEvents: 'none',
             }}
           >
-            <path d={zigZagCircle(50, 50, 65, 10, time, die.seed)} />
+            <path d={zigZagCircle(50, 50, 65, 10, time, die.seed)}  fill='#171d16'/>
           </svg>
         )}
         <svg
@@ -702,7 +703,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
             animation: 'diePopIn 0.75s ease-out forwards'
           }}
         >
-          <path d={wobblyDie(die, time)} />
+          <path d={wobblyDie(die, time)} fill='#171d16' />
           {renderPips(die)}
         </svg>
       </div>
@@ -719,7 +720,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
 
       }}>
         <svg viewBox="0 0 100 100" width="100%" height="100%" style={{ animation: 'dieBankPopIn 0.75s ease-out' }}>
-          <path d={wobblyDie(die, time)} />
+          <path d={wobblyDie(die, time)} fill='#171d16'/>
           {renderPips(die)}
         </svg>
       </div>
@@ -817,7 +818,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
 
 
       return (
-        <span style={{ display: 'inline-block', transform: `translateY(${dy}%)`, fontSize: `${getWidth(5)}px`, color: 'orange', fontFamily: "'Press Start 2P'" }}>
+        <span style={{ display: 'inline-block', transform: `translateY(${dy}%)`, fontSize: `${getWidth(5)}px`, color: '#e6b043e7', fontFamily: "'Press Start 2P'" }}>
           {char}
         </span>
       );
@@ -885,14 +886,16 @@ function changeDieLocation(die, newX, newY) // die you want to find
 
 
     if (playerChosen.current == false) {
-
+      playerChosen.current = true;
       if (playerNum == 1 && !(playerNum == 0))
         return -58;
       else if (!(playerNum == 0)) return 58
 
-      playerChosen.current = true;
+      
+      console.log("Player chose true")
     }
 
+    playerChosen.current = true;
     return startPos * -1;
 
   }
@@ -902,7 +905,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
   }
 
   return (
-
+    
     <div style={{
       width: '100vw',
       height: '100dvh',
@@ -912,6 +915,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
       overflow: 'hidden',
       background: '#093c50' // letterbox bars, change to taste
     }}>
+      <SmokeBackground/>
       <div style={{
         width: GAME_WIDTH,
         height: GAME_HEIGHT,
@@ -934,7 +938,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
           <div style={{ flex: '0 0 auto', display: 'flex', justifyContent: 'center', gap: `${getWidth(19)}px`, position: 'relative' }}>
 
             <svg width='50%' viewBox='0 0 100 100' style={{ position: 'absolute', transform: `translate(${currPlayerRoundLine(playersRound, time, playerChangeTimeStamp.current)}%,-10%)` }}> {/*position:'absolute', left:'54%', top:'-30%' use for Player2 */}
-              <path d={wobblyLine(25, 75, 50, 1, 25, time)} stroke='orange' fill='none' />                            {/*{position:'absolute', left:'-4%', top:'-30%' use for Player2  */}
+              <path d={wobblyLine(25, 75, 50, 1, 25, time)} stroke='#bbb2d6fb' fill='none' />                            {/*{position:'absolute', left:'-4%', top:'-30%' use for Player2  */}
             </svg>
 
             <div style={{ position: 'absolute', top: '65%' }}>
@@ -943,18 +947,18 @@ function changeDieLocation(die, newX, newY) // die you want to find
 
             {/*Player 1 */}
             <svg viewBox='0 0 100 50' width='40%' style={{ width: `${getWidth(37)}px` }}>
-              <path d={wobblyOval(50, 25, 50, 20, 20, 0.7, 1)} />
+              <path d={wobblyOval(50, 25, 50, 20, 20, 0.7, 1)} fill='#131f1d' stroke='#0407062d' />
               <text x='50' y='25' textAnchor='middle' dominantBaseline='middle'
-                fontSize='40%' fill='blue' fontFamily="'Press Start 2P'">
+                fontSize='40%' fill='#d2ceddfb' fontFamily="'Press Start 2P'">
                 {renderPoppingText(`Gertie: ${playerScores[0]}`, lastScoreChangeTime.current[0])}
               </text>
             </svg>
 
             {/*Player 2 */}
             <svg viewBox='0 0 100 50' width='40%' style={{ width: `${getWidth(37)}px` }}>
-              <path d={wobblyOval(50, 25, 50, 20, 17, 0.5, 2)} />
+              <path d={wobblyOval(50, 25, 50, 20, 17, 0.5, 2)} fill='#131f1d' stroke='#0407062d' />
               <text x='50' y='25' textAnchor='middle' dominantBaseline='middle'
-                fontSize='40%' fill='blue' fontFamily="'Press Start 2P'">
+                fontSize='40%' fill='#d2ceddfb' fontFamily="'Press Start 2P'">
                 {renderPoppingText(`Dev: ${playerScores[1]}`, lastScoreChangeTime.current[1])}
               </text>
             </svg>
@@ -971,26 +975,26 @@ function changeDieLocation(die, newX, newY) // die you want to find
             position: 'relative',
             minHeight: 0,
             aspectRatio: '16/9',
-            border: '1px solid black',
-            margin: '0.5em 0',
+            margin: '0.7em 0',
+            borderTop: '3px solid #0a1110',
+            borderRadius: '25px'
           }}>
             {renderDice()}
           </div>
 
           <div>
             {/* scores + round score svg - fixed, compact */}
-            <div id='bankBoxAndScore' style={{ flex: '0 0 auto', aspectRatio: '15/7', width: '100%', position: 'relative', overflow: 'hidden', border: '1px solid black', paddingBottom: '0', display: 'flex', flexDirection: 'column' }}>
+            <div id='bankBoxAndScore' style={{ flex: '0 0 auto', aspectRatio: '15/7', width: '100%', position: 'relative', overflow: 'hidden', borderTop: '3px solid #0a1110', borderBottom:'3px solid #0a1110', paddingBottom: '0', display: 'flex', flexDirection: 'column', borderRadius: '25px' }}>
               <div style={{ flex: '0 0 auto', textAlign: 'center', margin: '0', position: 'realtive' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                  <div style={{ flex: '0 0 auto' }}>Player One Score: {playerScores[0]}</div>
-                  <div style={{ flex: '0 0 auto' }}>Player Two Score: {playerScores[1]}</div>
+                 
                 </div>
                 <svg viewBox='0 0 160 140' width='38%' style={{ display: 'block', position: 'absolute', transform: 'translate(-50%,-50%)', left: '50%', top: '30%' }}>
-                  <path d={zigZagOval(80, 70, 75, 40, 16, time, .5)} />
-                  <path d={zigZagOval(80, 70, 68, 33, 16, time, .5)} stroke='orange' strokeWidth='.5' />
-                  <path d={zigZagOval(80, 70, 61, 31, 16, time, .5)} stroke='orange' strokeWidth='.5' />
+                  <path d={zigZagOval(80, 70, 75, 40, 16, time, .5)} fill="#326e62b6" />
+                  <path d={zigZagOval(80, 70, 68, 33, 16, time, .5)} stroke='#080705d5' strokeWidth='.5' fill='none' />
+                  <path d={zigZagOval(80, 70, 61, 31, 16, time, .5)} stroke='#9c9c9ca8' strokeWidth='.5' fill='none' />
                   <text x={textBtnSway(80, time, .5)} y='70' textAnchor='middle' dominantBaseline='middle'
-                    fontSize='75%' fill='blue' fontWeight='1' fontFamily="'Press Start 2P'">
+                    fontSize='75%' fill='#e6af43be' fontWeight='1' fontFamily="'Press Start 2P'">
                     {roundScore}
                   </text>
                 </svg>
@@ -1008,9 +1012,9 @@ function changeDieLocation(die, newX, newY) // die you want to find
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '15%',
+              gap: '15px',
               width: '100%',
-              marginTop: '8%',
+              marginTop: '12px',
 
 
             }}>
@@ -1020,21 +1024,21 @@ function changeDieLocation(die, newX, newY) // die you want to find
                 justifyContent: 'center',
                 width: '100%'
               }}>
-                <div style={{
+                <div className='curveBorder' style={{
                   flex: '0 0 auto',
                   width: '30%',
                   aspectRatio: '1/1',
                   border: `${getWidth(2)}px solid #000000`,
-                  borderTop: `${getWidth(2)}px solid #333333`,
-                  borderLeft: `${getWidth(2)}px solid #333333`,
+                  borderTop: `${getWidth(2)}px solid #022e25`,
+                  borderLeft: `${getWidth(2)}px solid #022e25`,
                   padding: `${getWidth(0.6)}px`, boxSizing: 'border-box',
                 }}>
-                  <div style={{
+                  <div className='curveBorder' style={{
                     width: '100%', height: '100%',
-                    backgroundColor: '#111111',
-                    border: `${getWidth(2)}px solid #333333`,
-                    borderBottom: `${getWidth(2)}px solid #070606bd`,
-                    borderRight: `${getWidth(2)}px solid #000000`,
+                    backgroundColor: '#326e62b6',
+                    border: `${getWidth(2)}px solid #022e2591`,
+                    borderBottom: `${getWidth(2)}px solid #070606d3`,
+                    borderRight: `${getWidth(2)}px solid #070606bd`,
                     transform: bankButtonPressed ? 'translate(1px, 1px)' : 'none',
                     fontFamily: "'Press Start 2P'",
                     fontSize: `${getWidth(4)}px`,
@@ -1059,21 +1063,21 @@ function changeDieLocation(die, newX, newY) // die you want to find
                   </div>
                 </div>
 
-                <div style={{
+                <div className='curveBorderRoll' style={{
                   flex: '0 0 auto',
                   width: '30%',
                   aspectRatio: '1/1',
                   border: `${getWidth(2)}px solid #000000`,
-                  borderTop: `${getWidth(2)}px solid #333333`,
-                  borderLeft: `${getWidth(2)}px solid #333333`,
+                  borderTop: `${getWidth(2)}px solid #022e25`,
+                  borderLeft: `${getWidth(2)}px solid #022e25`,
                   padding: `${getWidth(0.6)}px`, boxSizing: 'border-box',
                 }}>
-                  <div style={{
+                  <div className='curveBorderRoll' style={{
                     width: '100%', height: '100%',
-                    backgroundColor: '#111111',
-                    border: `${getWidth(2)}px solid #333333`,
-                    borderBottom: `${getWidth(2)}px solid #070606bd`,
-                    borderRight: `${getWidth(2)}px solid #000000`,
+                    backgroundColor: '#326e62b6',
+                    border: `${getWidth(2)}px solid #022e2591`,
+                    borderBottom: `${getWidth(2)}px solid #070606d3`,
+                    borderRight: `${getWidth(2)}px solid #070606d3`,
                     transform: rollButtonPressed ? 'translate(1px, 1px)' : 'none',
                     fontFamily: "'Press Start 2P'",
                     fontSize: `${getWidth(4)}px`,
@@ -1099,19 +1103,19 @@ function changeDieLocation(die, newX, newY) // die you want to find
                 </div>
               </div>
 
-              <div style={{
+              <div className='curveBorderRound' style={{
                 width: '70%', aspectRatio: '16/6',
                 border: `${getWidth(3)}px solid #000000`,
-                borderTop: `${getWidth(3)}px solid #333333`,
-                borderLeft: `${getWidth(3)}px solid #333333`,
+                borderTop: `${getWidth(3)}px solid #022e25`,
+                borderLeft: `${getWidth(3)}px solid #022e25`,
                 padding: `${getWidth(0.5)}px`, boxSizing: 'border-box',
               }}>
-                <div style={{
+                <div className='curveBorderRound'style={{
                   width: '100%', height: '100%',
-                  backgroundColor: '#111111',
-                  border: `${getWidth(3)}px solid #333333`,
-                  borderBottom: `${getWidth(3)}px solid #070606bd`,
-                  borderRight: `${getWidth(3)}px solid #000000`,
+                  backgroundColor: '#326e62b6',
+                  border: `${getWidth(3)}px solid #022e25c9`,
+                  borderBottom: `${getWidth(3)}px solid #070606d3`,
+                  borderRight: `${getWidth(3)}px solid #070606d3`,
                   transform: endRoundButtonPressed ? 'translate(1px, 1px)' : 'none',
                   fontFamily: "'Press Start 2P'",
                   fontSize: `${getWidth(4)}px`,

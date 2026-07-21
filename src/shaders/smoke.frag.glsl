@@ -58,7 +58,7 @@ float jitter(float time)// jitter for flicker crt effect
     return jitterTime;
 }
 
-vec2 applyScreenTear(vec2 uv, float t) {
+vec2 applyScreenTear(vec2 uv, float t) {// randomize where the tear starts
     float cycleLength = 2.0; // total seconds per tear cycle (appear + wait)
     float cyclePos = fract(t / cycleLength); // 0.0 to 1.0, repeating
 
@@ -72,7 +72,7 @@ vec2 applyScreenTear(vec2 uv, float t) {
     // sweep tearY DOWN the screen during the active window only
     // (cyclePos / activeWindow) goes 0→1 over just the active portion, giving a fast sweep
     float sweepProgress = cyclePos / activeWindow;
-    float tearY = sweepProgress; // 0.0 (top) to 1.0 (bottom) during the active burst
+    float tearY = sweepProgress + 0.5; // 0.0 (top) to 1.0 (bottom) during the active burst
 
     float cycleSeed = floor(t / cycleLength)/ 4.0;
 
@@ -108,7 +108,7 @@ vec2 applyScreenTear(vec2 uv, float t) {
         float n = fbmSmoothShape(basePos + warp *10.0);// warp is a 2d vector of two single floats constnaly being changed and scaled by time in differnt ways, then run 5 times through noise to get a single value for every pixle on the grid, 
         //then this is applied to to our basePos to constnatly warp it, and it will converge or push apart every time. Warp is a vector of noise values compounded, so lowering it will increase smoothness
 
-        float blob = smoothstep(0.1, 0.7, n);// smoothstep will return 0, if n is below 0.4, and will reutrn 1 if above 0.6
+        float blob = smoothstep(0.1, 0.7, n);// smoothstep will return 0, if n is below 0.1, and will reutrn 1 if above 0.7
 
         vec3 backgroundColor = vec3(0.04, 0.41, 0.39);
         vec3 waxColor = vec3(0.07, 0.29, 0.29);

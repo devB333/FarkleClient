@@ -34,7 +34,7 @@ function App()
     return (
       <BrowserRouter>
         <Routes>
-            <Route path='/' element={<SmokeBackground/>}/>
+            <Route path='/' element={<Game clientConn={client.current}/>}/>
         </Routes>
       </BrowserRouter>
     )
