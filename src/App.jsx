@@ -34,7 +34,9 @@ function App()
     return (
       <BrowserRouter>
         <Routes>
-            <Route path='/' element={<Game clientConn={client.current}/>}/>
+            <Route path='/' element={<Lobby clientConn={client.current}/>}/>
+            <Route path='/room' element={<Room clientConn={client.current}/>}/>
+            <Route path='/game' element={<Game clientConn={client.current}/>}/>
         </Routes>
       </BrowserRouter>
     )

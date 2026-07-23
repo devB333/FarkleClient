@@ -6,7 +6,6 @@ export class Client{
         
          this.connected();
 
-         this.socket.emit('joinRoom', ("ABC"));// when you actually implment this only call the constructor when you have the room code they put in from the lobby page
 
          this.socket.on('setPlayerNum', (playerNum) => {
             this.stateChangeCallbacks.setPlayerNumber(playerNum);
@@ -31,12 +30,24 @@ export class Client{
          this.socket.on('newRoundStart', ()=>{
             this.stateChangeCallbacks.newRoundStart();
          });
-         
+         //__________________________________________________________ lobby functions
+         this.socket.on('moveToRoom',()=>{
+            this.stateChangeCallbacks.moveToRoom();
+         });
+         //__________________________________________________________ room functions
+         this.socket.on('roomInfo', (data) =>{
+            this.stateChangeCallbacks.roomInfo(data.playerNames, data.roomCode);
+         });
      }
 
       addStateChangeCallback(methodName, method)
      {
          this.stateChangeCallbacks[methodName] = method;
+     }
+
+     checkIfConnected()
+     {
+         return "connected;"
      }
      
       connected()
@@ -70,6 +81,25 @@ export class Client{
      emitRerollDice(isNewRound)
      {
          this.socket.emit('reRollDice', isNewRound);
+     }
+
+
+
+     //__________________________________________________________ room functions
+     joinRoom(roomCode, name)// the server will decide if it needs to create a new room or not based on if room code is empty or not
+     {
+         const data = {
+            roomCode: roomCode,
+            name: name
+         };
+
+         console.log("in and trying to emit" + name);
+         this.socket.emit('joinRoom', data);
+     }
+     
+     emitGetRoomInfo()// this method will query the server on the room info to update state with names in lobby and roomCode
+     {
+         this.socket.emit('getRoomInfo');
      }
     
 }

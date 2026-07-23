@@ -1,7 +1,15 @@
 import {useState, useRef, useEffect} from 'react';
+import { Client } from './SocketConnection.js';
 
-export function Room()
+
+export function Room({clientConn})
 {
+    const [roomCode, setRoomCode] = useState('');
+    const [displayP2, updateDisplayP2] = useState(false);
+
+    const [p1Name, setP1Name] = useState('');
+    const [p2Name, setP2Name] = useState('');
+
     const [time, setTime] = useState(0);
       const timeRef = useRef(0);
       const frameRef = useRef(0);
@@ -13,7 +21,7 @@ export function Room()
         4: [[30, 30], [70, 30], [30, 70], [70, 70]],
         5: [[30, 30], [70, 30], [50, 50], [30, 70], [70, 70]],
         6: [[30, 30], [70, 30], [30, 50], [70, 50], [30, 70], [70, 70]],
-        8: [[30, 10], [70, 100],]
+        8: [[30, 0], [70, 105],]
     }
 
 
@@ -26,6 +34,24 @@ export function Room()
         return newDice;
     });
 
+    useEffect(() => {// TO DO: Add start game function and phone touch support!
+      clientConn.addStateChangeCallback("roomInfo", (playerNames, roomCode) =>{
+        setRoomCode(roomCode);// this will set the room code from the server
+        if((playerNames.length == 2))
+        {
+          updateDisplayP2(true);
+          setP2Name(playerNames[1]);
+          console.log(playerNames);
+        }
+            
+
+        setP1Name(playerNames[0]);
+        setRoomCode(roomCode);
+        
+      });
+
+      clientConn.emitGetRoomInfo();
+    }, []);// end 
 
      // this is what increments time and keeps track of the current ref frame
       useEffect(()=>{
@@ -113,8 +139,8 @@ export function Room()
       <div key={die.id * -1} style={{margin:'0 0', display: 'flex', justifyContent:'center', width: '100vw',aspectRatio: '1/1',
                 height: '100vh'
         
-      }}>
-        <svg viewBox="0 0 100 100" width = "100%" height = "100%"  style={{animation:'dieBankPopIn 0.75s ease-out'}}>
+      }}> {/* must clamp width and height when you get a change*/}
+        <svg viewBox="0 0 100 100" width = "100vw" height = "100vh"  style={{animation:'dieBankPopIn 0.75s ease-out'}}>
             <path d={wobblyDie(die,time)}/>
             {renderPips(die)}
         </svg>
@@ -145,13 +171,13 @@ function divBob(accleration,time, offset)
   return y;
 }
 
-function renderFloatingText(text,time)
+function renderFloatingText(text,time, fontSize, margin)
 {
   return text.split('').map((char,i)=>{
     const dy = waveChar(i,time);
-    console.log(dy);
+    //console.log(dy);
     return (
-      <span style={{display:'inline-block', transform:`translateY(${dy}%)`, margin:'0.4em', fontFamily:"'Press Start 2P'", fontSize: '8vw'}}>
+      <span style={{display:'inline-block', transform:`translateY(${dy}%)`, margin:`${margin}em`, fontFamily:"'Press Start 2P'", fontSize: `${fontSize}vw`}}>
         {char}
       </span>
     )
@@ -172,15 +198,21 @@ const [createRoomPress, updateCreateRoomPress] = useState(false);
             }}>
                 {renderDisplayDice()}
             </div>
-            <div style={{ height:'100vh', width: '100vw', display:'flex', justifyContent: 'center', alignItems:'center', flexDirection: 'column', zIndex: '3', position:'relative', gap:'5vh'}}>
+            <div style={{ height:'100vh', width: '100vw', display:'flex', justifyContent: 'center', alignItems:'center', flexDirection: 'column', zIndex: '3', position:'relative', gap:'2vh'}}>
                 
                 <div>
-                    <h1>{renderFloatingText("Farkle", time)}</h1>
+                    <h1>{renderFloatingText("Farkle", time, 8, 0.4)}</h1>
                 </div>       
                 
                 <div style={{display: 'flex', flexDirection:'row', gap:'15vw'}}>
-                  <h5 className="card-title" style={{fontFamily:"'Press Start 2P'", marginBottom:'15%', border:'10px solid #318071', padding: '10px', borderRadius:'25px', color:'ghostwhite', transform:`translate(${divBob(2, time, 3)}px,${divBob(0.5, time, 10)}px )`}}>Gertie</h5>
-                  <h5 className="card-title" style={{fontFamily:"'Press Start 2P'", marginBottom:'15%', border:'10px solid #318071', padding: '10px', borderRadius:'25px', color:'ghostwhite', transform:`translate(${divBob(2, time, 25)}px,${divBob(0.5, time, 10)}px )`}}>Dev</h5>
+                  <h5 className="card-title" style={{fontFamily:"'Press Start 2P'", marginBottom:'15%', border:'10px solid #318071', padding: '10px', borderRadius:'25px', color:'ghostwhite', transform:`translate(${divBob(2, time, 3)}px,${divBob(0.5, time, 10)}px )`,}}>{p1Name}</h5>
+                  <h5 className="card-title" style={{fontFamily:"'Press Start 2P'", marginBottom:'15%', border:'10px solid #318071', padding: '10px', borderRadius:'25px', color:'ghostwhite', transform:`translate(${divBob(2, time, 25)}px,${divBob(0.5, time, 10)}px )`,
+                display: displayP2== true ? 'inline-block' : 'none'
+                }}>{p2Name}</h5>
+                </div>
+
+                <div style={{display: 'flex', flexDirection:'row', gap:'15vw'}}>
+                  <h3 className="card-title" style={{fontFamily:"'Press Start 2P'", borderBottom:'1px solid #318071', padding: '10px', borderRadius:'5px', color:'ghostwhite', fontSize:'3vw', marginBottom:'1em'}}>Room Code: {renderFloatingText(roomCode, time, 3, 0.1)}</h3>
                 </div>
 
                 <div stlye={{display:'flex', flexDirection:'row'}}>

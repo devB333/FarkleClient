@@ -1,7 +1,11 @@
 import {useState, useRef, useEffect} from 'react';
+import { redirect, useNavigate } from "react-router-dom";
 
-export function Lobby()
+
+export function Lobby({clientConn})
 {
+    const navigate = useNavigate();
+    
     const [time, setTime] = useState(0);
       const timeRef = useRef(0);
       const frameRef = useRef(0);
@@ -26,6 +30,14 @@ export function Lobby()
         return newDice;
     });
 
+
+    useEffect(()=>{
+      clientConn.addStateChangeCallback('moveToRoom', ()=>{
+        
+        navigate("/room");
+        console.log("Should Have redir")
+      });
+    },[]);
 
      // this is what increments time and keeps track of the current ref frame
       useEffect(()=>{
@@ -142,7 +154,7 @@ function renderFloatingText(text,time)
 {
   return text.split('').map((char,i)=>{
     const dy = waveChar(i,time);
-    console.log(dy);
+    //console.log(dy);
     return (
       <span style={{display:'inline-block', transform:`translateY(${dy}%)`, margin:'0.4em', fontFamily:"'Press Start 2P'", fontSize: '8vw'}}>
         {char}
@@ -152,6 +164,21 @@ function renderFloatingText(text,time)
 }
 
 const [createRoomPress, updateCreateRoomPress] = useState(false);
+const playerName = useRef();// change this to a state var when you do invalid input handling so you can update screen state to tell user if invalid, for now, were just getting server functionality on login
+const roomCode = useRef();
+
+
+function handleCreateRoom()// TO DO: Handle invalid input and change state to display so, ie. if a player is creating a lobby dont let them input a roomCode and ensure they have a name and a score to win
+{
+  //console.log("sentOver");
+  clientConn.joinRoom("",playerName.current.value);
+}
+
+function handleJoinRoom()
+{
+  clientConn.joinRoom(roomCode.current.value, playerName.current.value);
+  console.log("Sent over " + playerName.current.value)
+}
 
     return (
         <div style={{}}>
@@ -171,17 +198,26 @@ const [createRoomPress, updateCreateRoomPress] = useState(false);
                     <h1>{renderFloatingText("Farkle", time)}</h1>
                 </div>       
                 <div style={{display:'flex', flexDirection: 'row'}}>
-                    <input className="lobbyInput" type="text" placeholder="Name: (8 Char max)"/>
+                    <input ref={playerName} className="lobbyInput" type="text" placeholder="Name: (8 Char max)"/>
                     <input className="lobbyInput" type="text" placeholder="Target Score"/>
                 </div>
                 <div style={{display:'flex', flexDirection: 'row'}}>
-                    <input className="lobbyInput" type="text" placeholder="Room Code:"/>
+                    <input ref={roomCode} className="lobbyInput" type="text" placeholder="Room Code:"/>
                 </div>
                 <div style={{display:'flex', flexDirection: 'row', justifyContent:'cente', alignContent:'center'}}>
-                  <button className='LobbyBtns'style={{fontFamily:"'Press Start 2P'"}}>
+                  <button className='LobbyBtns'style={{fontFamily:"'Press Start 2P'"}}
+                  onMouseUp= {()=>{
+                      console.log("mouseUp");
+                      handleCreateRoom();
+                    }}>
                       Create Room
                   </button>
-                  <button className='LobbyBtns' style={{fontFamily:"'Press Start 2P'"}}>
+                  <button className='LobbyBtns' style={{fontFamily:"'Press Start 2P'"}}
+                    onMouseUp= {()=>{
+                      console.log("mouseUp");
+                      handleJoinRoom();
+                    }}
+                  >
                     Join Room
                   </button>
                 </div>
