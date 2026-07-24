@@ -30,13 +30,20 @@ export class Client{
          this.socket.on('newRoundStart', ()=>{
             this.stateChangeCallbacks.newRoundStart();
          });
-         //__________________________________________________________ lobby functions
+
+         this.socket.on('gameSetPlayerNames', (playerNames) =>{
+            this.stateChangeCallbacks.gameSetPlayerNames(playerNames);
+         })
+         //__________________________________________________________ lobby functions below
          this.socket.on('moveToRoom',()=>{
             this.stateChangeCallbacks.moveToRoom();
          });
-         //__________________________________________________________ room functions
+         //__________________________________________________________ room functions below
          this.socket.on('roomInfo', (data) =>{
             this.stateChangeCallbacks.roomInfo(data.playerNames, data.roomCode);
+         });
+         this.socket.on('tryStartGameResponse', (response) =>{
+            this.stateChangeCallbacks.tryStartGameResponse(response);
          });
      }
 
@@ -101,5 +108,16 @@ export class Client{
      {
          this.socket.emit('getRoomInfo');
      }
+
+     emitTryStartGame()
+     {
+         this.socket.emit('tryStartGame');
+     }
     
+
+     //_______________________________________________________ gameStart funciton below
+     emitGameStart()
+     {
+         this.socket.emit('gameStart')
+     }
 }

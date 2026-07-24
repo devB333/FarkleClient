@@ -122,7 +122,7 @@ export function Lobby({clientConn})
   {
     //console.log(bankedDice);
      return dice.map((die) => ( 
-      <div key={die.id * -1} style={{margin:'0 0', display: 'flex', justifyContent:'center', width: '100vw',aspectRatio: '1/1',
+      <div key={die.id * -1} style={{margin:'0 0', display: 'flex', justifyContent:'center', width: '100vw', 
                 height: '100vh'
         
       }}>
@@ -187,8 +187,7 @@ function handleJoinRoom()
                 top: 0,
                 left: 0,
                 width: '100vw',
-                height: '100vh',
-                aspectRatio: '1/1'
+                height: '100dvh',
             }}>
                 {renderDisplayDice()}
             </div>
@@ -198,22 +197,22 @@ function handleJoinRoom()
                     <h1>{renderFloatingText("Farkle", time)}</h1>
                 </div>       
                 <div style={{display:'flex', flexDirection: 'row'}}>
-                    <input ref={playerName} className="lobbyInput" type="text" placeholder="Name: (8 Char max)"/>
-                    <input className="lobbyInput" type="text" placeholder="Target Score"/>
+                    <input ref={playerName} className="lobbyInputTop" type="text" placeholder="Name: (8 Char max)"/>
+                    <input className="lobbyInputTop" type="text" placeholder="Target Score"/>
                 </div>
                 <div style={{display:'flex', flexDirection: 'row'}}>
-                    <input ref={roomCode} className="lobbyInput" type="text" placeholder="Room Code:"/>
+                    <input ref={roomCode} className="lobbyInputBottom" type="text" placeholder="Room Code:"/>
                 </div>
                 <div style={{display:'flex', flexDirection: 'row', justifyContent:'cente', alignContent:'center'}}>
                   <button className='LobbyBtns'style={{fontFamily:"'Press Start 2P'"}}
-                  onMouseUp= {()=>{
+                  onPointerUp= {()=>{
                       console.log("mouseUp");
                       handleCreateRoom();
                     }}>
                       Create Room
                   </button>
                   <button className='LobbyBtns' style={{fontFamily:"'Press Start 2P'"}}
-                    onMouseUp= {()=>{
+                    onPointerUp= {()=>{
                       console.log("mouseUp");
                       handleJoinRoom();
                     }}

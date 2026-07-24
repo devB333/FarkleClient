@@ -11,6 +11,8 @@ import './App.css'
 export function Game({ clientConn }) {
   const [playerNumber, updatePlayerNumber] = useState(0);// number that the player is, makes it eaiser to idenitfy them, will be passed after they join the room
   const [playersRound, updatePlayersRound] = useState(0);// whos round it is to play, set after the game hasStarted
+  const [p1Name, setP1Name] = useState('');
+  const [p2Name, setP2Name] = useState('');
 
   const INTERNAL_CANVAS_WIDTH = 500;
   const INTERNAL_CANVAS_HEIGHT = 281; // 500 * 9/16 ≈ 281, matches 16:9
@@ -383,6 +385,12 @@ export function Game({ clientConn }) {
 
     }); // closes onNewDice arrow body + closes addStateChateCallBack("onNewDice", ...) call
 
+    clientConn.addStateChangeCallback('gameSetPlayerNames', (playerNames)=>{
+      setP1Name(playerNames[0]);
+      setP2Name(playerNames[1]);
+    });
+
+    clientConn.emitGameStart();// start the game
   }, []); // closes useEffect arrow body + closes useEffect(...) call
 
 
@@ -1048,16 +1056,12 @@ function changeDieLocation(die, newX, newY) // die you want to find
                     color: '#61998e8a',
                     animation: (pendingScore > 0) && hasRolled ? 'textGlowRoll 4s ease-out forwards' : hasBeenAvailableBank.current ? 'textGlowRollOut 1.5s ease-out forwards' : 'none'
                   }}
-                    onMouseDown={() => { setBankPressed(true); clientConn.emitBankButtonPressed(true); }}
-                    onMouseUp={() => {
+                    onPointerDown={() => { setBankPressed(true); clientConn.emitBankButtonPressed(true); }}
+                    onPointerUp={() => {
                       setBankPressed(false); clientConn.emitBankButtonPressed(false);
                       if ((pendingScore > 0) && hasRolled && (playersRound == playerNumber)) handleBanking();
                     }}
-                    onTouchStart={() => setBankPressed(true)}
-                    onTouchEnd={() => {
-                      setBankPressed(false);
-                      if ((pendingScore > 0) && hasRolled && (playersRound == playerNumber)) handleBanking();
-                    }}
+                  
                   >
                     Bank
                   </div>
@@ -1087,16 +1091,12 @@ function changeDieLocation(die, newX, newY) // die you want to find
                     color: hasRolled == false ? '#32cfb0' : '#61998e8a',
                     animation: hasRolled == false ? 'textGlowRoll 4s ease-out forwards' : hasBeenAvailableRoll.current ? 'textGlowRollOut 4s ease-out forwards' : 'none'
                   }}
-                    onMouseDown={() => setRollButtonPressed(true)}
-                    onMouseUp={() => {
+                    onPointerDown={() => setRollButtonPressed(true)}
+                    onPointerUp={() => {
                       setRollButtonPressed(false);
                       if ((hasRolled == false) && (playersRound == playerNumber)) reRollDice();
                     }}
-                    onTouchStart={() => setBankPressed(true)}
-                    onTouchEnd={() => {
-                      setBankPressed(false);
-                      if ((hasRolled == false) && (playersRound == playerNumber)) reRollDice();
-                    }}
+                    
                   >
                     Roll
                   </div>
@@ -1128,16 +1128,12 @@ function changeDieLocation(die, newX, newY) // die you want to find
 
                   animation: ((roundScore > 0) && !hasBusted && (playersRound == playerNumber) && (hasRolled == false)) ? 'textGlowRoundScore 5s ease-out forwards' : hasBeenAvailableScore.current ? 'textGlowRoundScoreOut 3s ease-out forwards' : 'none'// anmiation shadow controlled in index.css, 1s is the number of seconds, you can make it larger or smaller, forwards means keep the animation style
                 }}
-                  onMouseDown={() => setEndRoundButtonPressed(true)}
-                  onMouseUp={() => {
+                  onPointerDown={() => setEndRoundButtonPressed(true)}
+                  onPointerUp ={() => {
                     setEndRoundButtonPressed(false);
                     if ((roundScore > 0) && !hasBusted && (playersRound == playerNumber) && (hasRolled == false)) handleEndRound();
                   }}
-                  onTouchStart={() => setEndRoundButtonPressed(true)}
-                  onTouchEnd={() => {
-                    setEndRoundButtonPressed(false);
-                    if ((roundScore > 0) && !hasBusted && (playersRound == playerNumber) && (hasRolled == false)) handleEndRound();
-                  }}
+                  
                 >
                   End Round <br></br>N' Score
                 </div>

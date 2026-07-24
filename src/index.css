@@ -163,6 +163,7 @@ body {
   margin: 0;
   background-color:#6b6375;
   padding: 0;
+  overflow: hidden;
 }
 
 html{
@@ -174,7 +175,12 @@ html{
   --bs-card-height: 45% !important;
 }
 
-.lobbyInput{
+.lobbyInputTop{
+  margin: 1rem;
+  width: clamp(100px, 40vw, 250px);
+}
+
+.lobbyInputBottom{
   margin: 1rem;
 }
 
@@ -243,6 +249,7 @@ html, body {
   border-color: #328373;
   border-width: 5px;
   border-radius: 15px;
+  font-size: 75%;
 }
 
 .curveBorder{

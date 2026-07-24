@@ -1,9 +1,13 @@
 import {useState, useRef, useEffect} from 'react';
 import { Client } from './SocketConnection.js';
+import { redirect, useNavigate } from 'react-router-dom';
 
 
 export function Room({clientConn})
 {
+    const navigate = useNavigate()
+
+
     const [roomCode, setRoomCode] = useState('');
     const [displayP2, updateDisplayP2] = useState(false);
 
@@ -34,7 +38,7 @@ export function Room({clientConn})
         return newDice;
     });
 
-    useEffect(() => {// TO DO: Add start game function and phone touch support!
+    useEffect(() => {
       clientConn.addStateChangeCallback("roomInfo", (playerNames, roomCode) =>{
         setRoomCode(roomCode);// this will set the room code from the server
         if((playerNames.length == 2))
@@ -48,6 +52,15 @@ export function Room({clientConn})
         setP1Name(playerNames[0]);
         setRoomCode(roomCode);
         
+      });
+
+      clientConn.addStateChangeCallback('tryStartGameResponse', (response)=>{
+        if(response)// if response is true
+        {
+          navigate('/game');
+        }
+        else
+          alert("Wait for other player...");
       });
 
       clientConn.emitGetRoomInfo();
@@ -184,6 +197,12 @@ function renderFloatingText(text,time, fontSize, margin)
   })
 }
 
+
+function handleTryStartGame()
+{
+  clientConn.emitTryStartGame();
+}
+
 const [createRoomPress, updateCreateRoomPress] = useState(false);
 
     return (
@@ -216,7 +235,11 @@ const [createRoomPress, updateCreateRoomPress] = useState(false);
                 </div>
 
                 <div stlye={{display:'flex', flexDirection:'row'}}>
-                  <button className='LobbyBtns'style={{fontFamily:"'Press Start 2P'"}}>
+                  <button className='LobbyBtns'style={{fontFamily:"'Press Start 2P'"}}
+                  onPointerUp={()=>{// means call this function when mouse goes up
+                    handleTryStartGame();
+                  }}
+                  >
                       Start Game
                   </button>
                 </div>
