@@ -19,7 +19,7 @@ function App()
   const socket = useRef(null);
 
   if(!socket.current)
-  {
+  {                           // for running on localHost machine: localHost:3000
       socket.current = io("localHost:3000") //for testing with phone over local neetwrok: http://10.0.0.189:3000
      client.current = new Client(socket.current);// end client constructor
   }

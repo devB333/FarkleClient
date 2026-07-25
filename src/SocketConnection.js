@@ -33,7 +33,15 @@ export class Client{
 
          this.socket.on('gameSetPlayerNames', (playerNames) =>{
             this.stateChangeCallbacks.gameSetPlayerNames(playerNames);
-         })
+         });
+
+         this.socket.on('hasWon', ({playerNumber, playerOneScore, playerTwoScore})=>{
+            this.stateChangeCallbacks.hasWon(playerNumber, playerOneScore, playerTwoScore);
+         });
+
+         this.socket.on('newGameStart', (playerScores)=>{
+            this.stateChangeCallbacks.newGameStart(playerScores);
+         });
          //__________________________________________________________ lobby functions below
          this.socket.on('moveToRoom',()=>{
             this.stateChangeCallbacks.moveToRoom();
@@ -90,14 +98,20 @@ export class Client{
          this.socket.emit('reRollDice', isNewRound);
      }
 
+     emitNewGame()
+     {
+         this.socket.emit('newGame');
+     }
+
 
 
      //__________________________________________________________ room functions
-     joinRoom(roomCode, name)// the server will decide if it needs to create a new room or not based on if room code is empty or not
+     joinRoom(roomCode, name, scoreToWin)// the server will decide if it needs to create a new room or not based on if room code is empty or not
      {
          const data = {
             roomCode: roomCode,
-            name: name
+            name: name,
+            scoreToWin: scoreToWin
          };
 
          console.log("in and trying to emit" + name);

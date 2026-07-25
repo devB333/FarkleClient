@@ -1,11 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { io } from "socket.io-client"
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import UpdateSelected from './ScoreBoard.jsx'
 import { Client } from './SocketConnection.js'
 import {SmokeBackground} from './Background.jsx'
+import { WinGamePopUp } from './WinGamePopUp.jsx'
 import './App.css'
 
 export function Game({ clientConn }) {
@@ -140,21 +138,21 @@ export function Game({ clientConn }) {
   // we nest a while loop inside the for loop so that we can make sure its not overlapping again, and then 
   // after that we restart the for loop and make it go through all the dice again to ensure it has not interfeared with any other dice as well.
   function overlapCheck(die, diceArr) {
-    console.log("hello")
+    //console.log("hello")
     const whileLimit = 1000;
     var whileCounter = 0;
 
     for (let i = die.id - 1; i >= 0; i--) {
-      console.log("in");
+      //console.log("in");
       var wasOverlapping = false;
 
       //console.log(diceArr.size + " " + i)
       while (isOverlapping(die, diceArr[i]))// until the die is not overlapping run this
       {
 
-        console.log("in while");
+        //console.log("in while");
         if (whileLimit == whileCounter) {
-          console.log("limit reached");
+          //console.log("limit reached");
           break;
         }
 
@@ -291,7 +289,7 @@ export function Game({ clientConn }) {
     let yCords = [cy + Math.sin(time)];
     let d = ` M ${x1} ${cy}`
 
-    console.log(wobbles)
+    //console.log(wobbles)
     for (let i = 1; i <= wobbles; i++) {
       cords.push(cords[i - 1] + increment);
 
@@ -331,22 +329,22 @@ export function Game({ clientConn }) {
       updateHasRolled(hasRolled); // lets the player bank because they are looking at fresh dice, only if dice were rolled from a reRoll button not selectDice or prepares it for new player if they have busted
       updatePlayersRound(playersRound);// set new player up for next round
 
-      console.log("Curr Val: " + hasBusted);
+      //console.log("Curr Val: " + hasBusted);
 
-      console.log(pendingScore + " " + hasRolled);
+      //console.log(pendingScore + " " + hasRolled);
       if ((pendingScore > 0) && (hasRolled == false)) {
         hasBeenAvailableBank.current = true;
-        console.log("Bank Set")
+        //console.log("Bank Set")
       }
       if (hasRolled)
         hasBeenAvailableRoll.current = true;
 
-      console.log("This is has rolleed " + hasRolled);
+      //console.log("This is has rolleed " + hasRolled);
 
       if (hasBusted) {
         setIsnewRound(true);
 
-        console.log("Busted!" + playersRound);
+        //console.log("Busted!" + playersRound);
         toggleBustScreen();
       }
 
@@ -359,7 +357,7 @@ export function Game({ clientConn }) {
         updateRoundScore(newRoundScore);
 
         hasBeenAvailableScore.current = true;
-        console.log("this had been set to true");
+        //console.log("this had been set to true");
       });
       clientConn.addStateChangeCallback("returnHandleScore", (newBankedDice, newPlayerScore, playerScoring, playerOneScore, playerTwoScore, playersRound) => {// this will be used to update the respective players score as well as sync bankedDice reset and switch turns using playerScoring logic to derive which player is next, maybe also recive the checkGameBool here too
         //console.log(playerScores);
@@ -370,7 +368,7 @@ export function Game({ clientConn }) {
 
         //console.log(newPlayerScores);
 
-        console.log(playersRound);
+        //console.log(playersRound);
         updatePlayersRound(playersRound);// set new player up for next round
 
         setIsnewRound(true);
@@ -390,11 +388,46 @@ export function Game({ clientConn }) {
       setP2Name(playerNames[1]);
     });
 
+    clientConn.addStateChangeCallback('hasWon', (playerNumber, playerOneScore, playerTwoScore)=>{
+      let addName = '';
+      let winningScore = 0;
+      let otherScore = 0;
+
+      if (playerNumber == 1)
+      {
+        winningScore = playerOneScore;
+        otherScore = playerTwoScore;
+      }
+      else if(playerNumber == 2)
+      {
+        winningScore = playerTwoScore;
+        otherScore = playerOneScore;
+      }
+
+      
+
+      setWinGameObj(()=>{
+        const winGameObj = {
+          playerNum: playerNumber,
+          winningScore: winningScore,
+          otherScore: otherScore
+        };
+
+        return winGameObj;
+      })
+    });
+
+    clientConn.addStateChangeCallback('newGameStart', (playerScores)=>{
+      updatePlayerScores(playerScores);
+      setWinGameObj(null);
+      
+    });
+    
     clientConn.emitGameStart();// start the game
   }, []); // closes useEffect arrow body + closes useEffect(...) call
 
 
-
+  const [winGameObj, setWinGameObj] = useState(null);
   
 
   // this is what increments time and keeps track of the current ref frame
@@ -559,7 +592,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
   //this function will genrate new dice to reroll
   // passed to server
   function reRollDice(howManyToReroll) {
-    console.log("gonna reroll")
+    //console.log("gonna reroll")
     clientConn.emitRerollDice(isNewRound);// if its a new round we want to reroll all 6 dice no matter what
   }
 
@@ -651,10 +684,10 @@ function changeDieLocation(die, newX, newY) // die you want to find
       newPendingScore(newPendingScoreEmit);// this sets the new pending score locally
 
       clientConn.emitSelectedDieMatch(newDiceArr, newPendingScoreEmit);// this updates it on the server to be sent to the other client
-      console.log(newPendingScoreEmit + " wdadw " + hasRolled);
+      //console.log(newPendingScoreEmit + " wdadw " + hasRolled);
       if ((newPendingScoreEmit > 0) && (hasRolled == true)) {
         hasBeenAvailableBank.current = true;
-        console.log("dwadwadwa");
+        //console.log("dwadwadwa");
       }
 
       return newDiceArr;
@@ -665,7 +698,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
   }
 
   function handleEndRound() {
-    console.log("Handling End ROund");
+    //console.log("Handling End ROund");
     clientConn.endRoundBank(roundScore);
   }
 
@@ -705,7 +738,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
           viewBox="0 0 100 100"
           width="100%"
           height="100%"
-          onClick={() => handleSelectDie(die)}
+          onPointerUp={() => handleSelectDie(die)}
           style={{
             '--rotation': `${die.rotation}deg`,
             animation: 'diePopIn 0.75s ease-out forwards'
@@ -749,7 +782,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
       shiftDegree += limiter;
     }
 
-    console.log(shiftDegree);
+    //console.log(shiftDegree);
     return shiftDegree;
   }
 
@@ -797,7 +830,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
 
     if (((elapsed - delay) > 0)) {
       popTimeRef.current = time;
-      console.log("hi")
+      //console.log("hi")
     }
 
   }, [time]);
@@ -860,7 +893,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
   const playerChangeTimeStamp = useRef(0);
   useEffect(() => {
     playerChangeTimeStamp.current = time;
-    console.log("fired");
+    //console.log("fired");
   }, [playersRound]);
 
   const playerChosen = useRef(false);
@@ -881,11 +914,11 @@ function changeDieLocation(die, newX, newY) // die you want to find
     else if ((playerChosen.current == false) && !(playerNum == 0)) {
       offSet = 58;
       startPos = 0;
-      console.log("set to 0");
+      //console.log("set to 0");
     }
 
     if (progress <= 1 && !(progress > 1)) {
-      console.log("startPos: " + startPos)
+      //console.log("startPos: " + startPos)
       if (playerNum == 1)
         return startPos + (offSet * progress * - 1 * eased);
       else
@@ -900,7 +933,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
       else if (!(playerNum == 0)) return 58
 
       
-      console.log("Player chose true")
+      //console.log("Player chose true")
     }
 
     playerChosen.current = true;
@@ -912,6 +945,30 @@ function changeDieLocation(die, newX, newY) // die you want to find
     return 1 - (1 - t) * (1 - t);
   }
 
+  function checkWinGamePopUp()
+  {
+    if (winGameObj == null)
+    {
+      console.log("Hasn't Won");
+      return;
+    }
+    else
+    {
+      let name = '';
+
+      if(winGameObj.playerNum == 1)
+        name = p1Name;
+      else if(winGameObj.playerNum == 2)
+        name = p2Name;
+
+
+      console.log("Has Won");
+      console.log("Winning Score" + winGameObj.winningScore);
+      console.log("Losing Score" + winGameObj.otherScore);
+      return (<WinGamePopUp className='hasWon' name={name} winningScore={winGameObj.winningScore} otherScore={winGameObj.otherScore} clientConn={clientConn}/>)
+    }
+      
+  }
   return (
     
     <div style={{
@@ -924,6 +981,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
       background: '#093c50' // letterbox bars, change to taste
     }}>
       <SmokeBackground/>
+      {checkWinGamePopUp()}
       <div style={{
         width: GAME_WIDTH,
         height: GAME_HEIGHT,
@@ -958,7 +1016,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
               <path d={wobblyOval(50, 25, 50, 20, 20, 0.7, 1)} fill='#131f1d' stroke='#0407062d' />
               <text x='50' y='25' textAnchor='middle' dominantBaseline='middle'
                 fontSize='40%' fill='#d2ceddfb' fontFamily="'Press Start 2P'">
-                {renderPoppingText(`Gertie: ${playerScores[0]}`, lastScoreChangeTime.current[0])}
+                {renderPoppingText(`${p1Name}: ${playerScores[0]}`, lastScoreChangeTime.current[0])}
               </text>
             </svg>
 
@@ -967,7 +1025,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
               <path d={wobblyOval(50, 25, 50, 20, 17, 0.5, 2)} fill='#131f1d' stroke='#0407062d' />
               <text x='50' y='25' textAnchor='middle' dominantBaseline='middle'
                 fontSize='40%' fill='#d2ceddfb' fontFamily="'Press Start 2P'">
-                {renderPoppingText(`Dev: ${playerScores[1]}`, lastScoreChangeTime.current[1])}
+                {renderPoppingText(`${p2Name}: ${playerScores[1]}`, lastScoreChangeTime.current[1])}
               </text>
             </svg>
             {/* remove most of this stuff and replace it with the oval names and socre. And put pending score in a plain black box in the center, use position absoulte and save yourself the time <h1 style={{ margin: '0.2em 0' }}>Farkle</h1>

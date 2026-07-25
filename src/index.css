@@ -264,3 +264,83 @@ html, body {
 .curveBorderRound{
   border-radius: 12px;
 }
+
+.hasWon{
+  background-color: #08060d;
+  position: absolute;
+  top: 35dvh;
+  left: 50dvw;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 95dvw;
+  padding: 10%;
+  opacity: 75%;
+  font-family: "Press Start 2P";
+  transform-origin: center center;
+    color: #e6af43;
+    text-shadow:
+        2px 0px #000,
+        -2px 0px #000,
+        0px 2px #000,
+        0px -2px #000;
+
+    animation: firstAppear 0.4s ease forwards, flicker 0.9s infinite;
+
+    font-size: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+    border-top: 15px solid #022e25c9;
+    border-left: 15px solid #022e25c9;
+    border-right: 15px solid #070606d3;
+    border-bottom: 15px solid #070606d3;
+
+    border-radius: 10px;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+}
+
+@keyframes flicker
+{
+  0%{
+    opacity: 75%;
+  }
+
+  30%{
+    opacity: 73%;
+  }
+
+  60%{
+      opacity: 75%;
+  }
+
+  100%{
+    opacity: 75%;
+  }
+}
+
+@keyframes firstAppear {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  40% {
+    transform: translate(-50%, -50%) scaleX(1) scaleY(0.01);
+  }
+
+  60%{
+    transform: translate(-50%, -50%) scaleX(1) scaleY(0.4);
+  }
+
+  70% {
+    transform: translate(-50%, -50%) scaleX(1) scaleY(0.8);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scaleX(1) scaleY(1);
+  }
+}

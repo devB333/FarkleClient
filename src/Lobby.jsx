@@ -166,17 +166,18 @@ function renderFloatingText(text,time)
 const [createRoomPress, updateCreateRoomPress] = useState(false);
 const playerName = useRef();// change this to a state var when you do invalid input handling so you can update screen state to tell user if invalid, for now, were just getting server functionality on login
 const roomCode = useRef();
+const scoreToWin = useRef();
 
 
 function handleCreateRoom()// TO DO: Handle invalid input and change state to display so, ie. if a player is creating a lobby dont let them input a roomCode and ensure they have a name and a score to win
 {
   //console.log("sentOver");
-  clientConn.joinRoom("",playerName.current.value);
+  clientConn.joinRoom("",playerName.current.value, scoreToWin.current.value);
 }
 
 function handleJoinRoom()
 {
-  clientConn.joinRoom(roomCode.current.value, playerName.current.value);
+  clientConn.joinRoom(roomCode.current.value, playerName.current.value,"");
   console.log("Sent over " + playerName.current.value)
 }
 
@@ -198,7 +199,7 @@ function handleJoinRoom()
                 </div>       
                 <div style={{display:'flex', flexDirection: 'row'}}>
                     <input ref={playerName} className="lobbyInputTop" type="text" placeholder="Name: (8 Char max)"/>
-                    <input className="lobbyInputTop" type="text" placeholder="Target Score"/>
+                    <input ref={scoreToWin} className="lobbyInputTop" type="text" placeholder="Target Score"/>
                 </div>
                 <div style={{display:'flex', flexDirection: 'row'}}>
                     <input ref={roomCode} className="lobbyInputBottom" type="text" placeholder="Room Code:"/>
