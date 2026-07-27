@@ -177,11 +177,25 @@ html{
 
 .lobbyInputTop{
   margin: 1rem;
-  width: clamp(100px, 40vw, 250px);
+  width: clamp(100px, 42dvw, 250px);
+  background-color: #3B3B3B;
+  border-style: solid;
+  border-top-color: black;
+  border-left-color: black;
+  border-right-color:#afb4b3a6;
+  border-bottom-color: #afb4b3a6;
+
+  
 }
 
 .lobbyInputBottom{
   margin: 1rem;
+   background-color: #3B3B3B;
+  border-style: solid;
+  border-top-color: black;
+  border-left-color: black;
+  border-right-color:#afb4b3a6;
+  border-bottom-color: #afb4b3a6;
 }
 
 #root {
@@ -243,13 +257,18 @@ html, body {
 }
 
 .LobbyBtns{
+  border-style: solid;
   padding: 10px;
   margin: 10px;
   background-color: #08060d;
-  border-color: #328373;
+  border-top-color: #318375;
+  border-left-color: #318375;
+  border-right-color:#11302A;
+  border-bottom-color: #11302A;
   border-width: 5px;
   border-radius: 15px;
   font-size: 75%;
+  color: ghostWhite;
 }
 
 .curveBorder{
@@ -344,3 +363,32 @@ html, body {
     transform: translate(-50%, -50%) scaleX(1) scaleY(1);
   }
 }
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.card-title {
+  position: relative;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #08060d;
+  overflow: hidden;
+}
+
+.card-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #318071;
+  border-radius: 999px;
+}
+

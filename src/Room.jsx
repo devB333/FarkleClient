@@ -190,7 +190,7 @@ function renderFloatingText(text,time, fontSize, margin)
     const dy = waveChar(i,time);
     //console.log(dy);
     return (
-      <span style={{display:'inline-block', transform:`translateY(${dy}%)`, margin:`${margin}em`, fontFamily:"'Press Start 2P'", fontSize: `${fontSize}vw`}}>
+      <span style={{display:'inline-block', color:'ghostWhite' ,transform:`translateY(${dy}%)`, margin:`${margin}em`, fontFamily:"'Press Start 2P'", fontSize: `${fontSize}vw`}}>
         {char}
       </span>
     )
@@ -224,14 +224,14 @@ const [createRoomPress, updateCreateRoomPress] = useState(false);
                 </div>       
                 
                 <div style={{display: 'flex', flexDirection:'row', gap:'15vw'}}>
-                  <h5 className="card-title" style={{fontFamily:"'Press Start 2P'", marginBottom:'15%', border:'10px solid #318071', padding: '10px', borderRadius:'25px', color:'ghostwhite', transform:`translate(${divBob(2, time, 3)}px,${divBob(0.5, time, 10)}px )`,}}>{p1Name}</h5>
-                  <h5 className="card-title" style={{fontFamily:"'Press Start 2P'", marginBottom:'15%', border:'10px solid #318071', padding: '10px', borderRadius:'25px', color:'ghostwhite', transform:`translate(${divBob(2, time, 25)}px,${divBob(0.5, time, 10)}px )`,
+                  <h5  style={{fontFamily:"'Press Start 2P'", marginBottom:'15%', border:'10px solid #318071', padding: '10px', borderRadius:'25px', color:'ghostwhite', transform:`translate(${divBob(2, time, 3)}px,${divBob(0.5, time, 10)}px )`,}}>{p1Name}</h5>
+                  <h5  style={{fontFamily:"'Press Start 2P'", marginBottom:'15%', border:'10px solid #318071', padding: '10px', borderRadius:'25px', color:'ghostwhite', transform:`translate(${divBob(2, time, 25)}px,${divBob(0.5, time, 10)}px )`,
                 display: displayP2== true ? 'inline-block' : 'none'
                 }}>{p2Name}</h5>
                 </div>
 
                 <div style={{display: 'flex', flexDirection:'row', gap:'15vw'}}>
-                  <h3 className="card-title" style={{fontFamily:"'Press Start 2P'", borderBottom:'1px solid #318071', padding: '10px', borderRadius:'5px', color:'ghostwhite', fontSize:'3vw', marginBottom:'1em'}}>Room Code: {renderFloatingText(roomCode, time, 3, 0.1)}</h3>
+                  <h3 className="card-title" style={{fontFamily:"'Press Start 2P'", backgroundColor: 'black',overflow: 'hidden',  padding: '10px',   color:'ghostwhite', fontSize:'3vw', marginBottom:'1em', }}>Room Code: {renderFloatingText(roomCode, time, 3, 0.1)}</h3>
                 </div>
 
                 <div stlye={{display:'flex', flexDirection:'row'}}>

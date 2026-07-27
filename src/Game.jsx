@@ -859,7 +859,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
 
 
       return (
-        <span style={{ display: 'inline-block', transform: `translateY(${dy}%)`, fontSize: `${getWidth(5)}px`, color: '#e6b043e7', fontFamily: "'Press Start 2P'" }}>
+        <span style={{ display: 'inline-block', transform: `translateY(${dy}%)`, fontSize: `${getWidth(5)}px`, color: '#f0a50ffb', fontFamily: "'Press Start 2P'" }}>
           {char}
         </span>
       );
@@ -972,7 +972,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
   return (
     
     <div style={{
-      width: '100vw',
+      width: '100dvw',
       height: '100dvh',
       display: 'flex',
       alignItems: 'center',
@@ -990,7 +990,7 @@ function changeDieLocation(die, newX, newY) // die you want to find
         position: 'relative'
       }}>
         <div style={{
-          height: '100d%',
+          height: '100%',
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
@@ -1056,11 +1056,11 @@ function changeDieLocation(die, newX, newY) // die you want to find
                  
                 </div>
                 <svg viewBox='0 0 160 140' width='38%' style={{ display: 'block', position: 'absolute', transform: 'translate(-50%,-50%)', left: '50%', top: '30%' }}>
-                  <path d={zigZagOval(80, 70, 75, 40, 16, time, .5)} fill="#326e62b6" />
+                  <path d={zigZagOval(80, 70, 75, 40, 16, time, .5)} fill="#255c51b6" />
                   <path d={zigZagOval(80, 70, 68, 33, 16, time, .5)} stroke='#080705d5' strokeWidth='.5' fill='none' />
                   <path d={zigZagOval(80, 70, 61, 31, 16, time, .5)} stroke='#9c9c9ca8' strokeWidth='.5' fill='none' />
                   <text x={textBtnSway(80, time, .5)} y='70' textAnchor='middle' dominantBaseline='middle'
-                    fontSize='75%' fill='#e6af43be' fontWeight='1' fontFamily="'Press Start 2P'">
+                    fontSize='75%' fill='#f1a50ccc' fontWeight='1' fontFamily="'Press Start 2P'">
                     {roundScore}
                   </text>
                 </svg>
@@ -1092,19 +1092,19 @@ function changeDieLocation(die, newX, newY) // die you want to find
               }}>
                 <div className='curveBorder' style={{
                   flex: '0 0 auto',
-                  width: '30%',
-                  aspectRatio: '1/1',
+                  width: `${getWidth(30)}px`,
+                  height: `${getWidth(30)}px`,
                   border: `${getWidth(2)}px solid #000000`,
-                  borderTop: `${getWidth(2)}px solid #022e25`,
-                  borderLeft: `${getWidth(2)}px solid #022e25`,
+                  borderTop: `${getWidth(2)}px solid #034437b7`,
+                  borderLeft: `${getWidth(2)}px solid #034437b7`,
                   padding: `${getWidth(0.6)}px`, boxSizing: 'border-box',
                 }}>
                   <div className='curveBorder' style={{
                     width: '100%', height: '100%',
                     backgroundColor: '#326e62b6',
-                    border: `${getWidth(2)}px solid #022e2591`,
+                    border: `${getWidth(2)}px solid #034437b7`,
                     borderBottom: `${getWidth(2)}px solid #070606d3`,
-                    borderRight: `${getWidth(2)}px solid #070606bd`,
+                    borderRight: `${getWidth(2)}px solid #070606d3`,
                     transform: bankButtonPressed ? 'translate(1px, 1px)' : 'none',
                     fontFamily: "'Press Start 2P'",
                     fontSize: `${getWidth(4)}px`,
@@ -1127,17 +1127,17 @@ function changeDieLocation(die, newX, newY) // die you want to find
 
                 <div className='curveBorderRoll' style={{
                   flex: '0 0 auto',
-                  width: '30%',
-                  aspectRatio: '1/1',
+                  width: `${getWidth(30)}px`,
+                  height: `${getWidth(30)}px`,
                   border: `${getWidth(2)}px solid #000000`,
-                  borderTop: `${getWidth(2)}px solid #022e25`,
-                  borderLeft: `${getWidth(2)}px solid #022e25`,
+                  borderTop: `${getWidth(2)}px solid #034437b7`,
+                  borderLeft: `${getWidth(2)}px solid #034437b7`,
                   padding: `${getWidth(0.6)}px`, boxSizing: 'border-box',
                 }}>
                   <div className='curveBorderRoll' style={{
                     width: '100%', height: '100%',
                     backgroundColor: '#326e62b6',
-                    border: `${getWidth(2)}px solid #022e2591`,
+                    border: `${getWidth(2)}px solid #034437b7`,
                     borderBottom: `${getWidth(2)}px solid #070606d3`,
                     borderRight: `${getWidth(2)}px solid #070606d3`,
                     transform: rollButtonPressed ? 'translate(1px, 1px)' : 'none',
@@ -1162,16 +1162,17 @@ function changeDieLocation(die, newX, newY) // die you want to find
               </div>
 
               <div className='curveBorderRound' style={{
-                width: '70%', aspectRatio: '16/6',
+                width: `${getWidth(70)}px`,
+                height: `${getWidth(25)}px`,
                 border: `${getWidth(3)}px solid #000000`,
-                borderTop: `${getWidth(3)}px solid #022e25`,
-                borderLeft: `${getWidth(3)}px solid #022e25`,
+                borderTop: `${getWidth(3)}px solid #034437b7`,
+                borderLeft: `${getWidth(3)}px solid #034437b7`,
                 padding: `${getWidth(0.5)}px`, boxSizing: 'border-box',
               }}>
                 <div className='curveBorderRound'style={{
                   width: '100%', height: '100%',
                   backgroundColor: '#326e62b6',
-                  border: `${getWidth(3)}px solid #022e25c9`,
+                  border: `${getWidth(3)}px solid #034437b7`,
                   borderBottom: `${getWidth(3)}px solid #070606d3`,
                   borderRight: `${getWidth(3)}px solid #070606d3`,
                   transform: endRoundButtonPressed ? 'translate(1px, 1px)' : 'none',

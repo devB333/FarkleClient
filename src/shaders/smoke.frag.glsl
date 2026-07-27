@@ -110,8 +110,8 @@ vec2 applyScreenTear(vec2 uv, float t) {// randomize where the tear starts
 
         float blob = smoothstep(0.1, 0.7, n);// smoothstep will return 0, if n is below 0.1, and will reutrn 1 if above 0.7
 
-        vec3 backgroundColor = vec3(0.04, 0.41, 0.39);
-        vec3 waxColor = vec3(0.07, 0.29, 0.29);
+        vec3 backgroundColor = vec3(0.01, 0.7, 0.65);
+        vec3 waxColor = vec3(0.01, 0.42, 0.42);
 
         vec3 color = mix(backgroundColor, waxColor, blob);//blends two colors together based on the value of blob, to make it more extreme, make the blob smoothstep narrower
 

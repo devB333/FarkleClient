@@ -17,7 +17,7 @@ export function Lobby({clientConn})
         4: [[30, 30], [70, 30], [30, 70], [70, 70]],
         5: [[30, 30], [70, 30], [50, 50], [30, 70], [70, 70]],
         6: [[30, 30], [70, 30], [30, 50], [70, 50], [30, 70], [70, 70]],
-        8: [[30, 10], [70, 100],]
+        8: [[30, 0], [70, 100],]
     }
 
 
@@ -156,7 +156,7 @@ function renderFloatingText(text,time)
     const dy = waveChar(i,time);
     //console.log(dy);
     return (
-      <span style={{display:'inline-block', transform:`translateY(${dy}%)`, margin:'0.4em', fontFamily:"'Press Start 2P'", fontSize: '8vw'}}>
+      <span style={{display:'inline-block', transform:`translateY(${dy}%)`, margin:'0.4em', fontFamily:"'Press Start 2P'", fontSize: '8vw', color: 'ghostwhite'}}>
         {char}
       </span>
     )
@@ -192,7 +192,7 @@ function handleJoinRoom()
             }}>
                 {renderDisplayDice()}
             </div>
-            <div style={{ height:'100vh', width: '100vw', display:'flex', justifyContent: 'center', alignItems:'center', flexDirection: 'column', zIndex: '3', position:'relative'}}>
+            <div style={{ height:'100dvh', width: '100vw', display:'flex', justifyContent: 'center', alignItems:'center', flexDirection: 'column', zIndex: '3', position:'relative'}}>
                 
                 <div>
                     <h1>{renderFloatingText("Farkle", time)}</h1>
