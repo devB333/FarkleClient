@@ -2,7 +2,10 @@
 
 A real-time multiplayer implementation of the classic Farkle dice game built with React and WebSockets. Players can create or join rooms, roll dice, manage scores, and compete against other players with synchronized game state across clients.
 
-
+## Demo
+<div align="center">
+  <img src="gif/FarkleDemo.gif" width="450">
+</div>
 ## Features
 
 - Real-time multiplayer gameplay using WebSockets
