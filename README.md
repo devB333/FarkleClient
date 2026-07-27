@@ -6,6 +6,7 @@ A real-time multiplayer implementation of the classic Farkle dice game built wit
 <div align="center">
   <img src="gif/FarkleDemo.gif" width="450">
 </div>
+
 ## Features
 
 - Real-time multiplayer gameplay using WebSockets
