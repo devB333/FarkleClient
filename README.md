@@ -73,7 +73,7 @@ Created animated SVG components and GLSL shader effects for a unique visual styl
 ## Installation
 
 ```bash
-git clone <repository-url>
+git clone <(https://github.com/devB333/FarkleClient)>
 cd farkle-client
 npm install
 npm run dev
