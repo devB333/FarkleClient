@@ -27,6 +27,10 @@ export function Game({ clientConn }) {
     return 400 * (x / 100);
   }
 
+  function getHeight(y){
+    return 750 * (y/100);
+  }
+
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
@@ -322,6 +326,15 @@ export function Game({ clientConn }) {
     clientConn.addStateChangeCallback("onBankButtonPressed", (state) => {
       setBankPressed(state);// were passing the setBankPressed function via a lambda, to be acessed like an object via onBankButtonPressed. It will look like: sateChangeCallbacks.onBankButtonPressed(state); That is the client Class equivenlnt of setBankPressed(state);
     });
+
+    clientConn.addStateChangeCallback("onRollButtonPressed", (state) => {
+      setRollButtonPressed(state);
+    });
+
+    clientConn.addStateChangeCallback("onEndRoundButtonPressed", (state) => {
+      setEndRoundButtonPressed(state);
+    });
+    
     clientConn.addStateChangeCallback("setPlayerNumber", (newPlayerNum) => {
       updatePlayerNumber(newPlayerNum);
     });
@@ -346,11 +359,11 @@ export function Game({ clientConn }) {
       //console.log("This is has rolleed " + hasRolled);
 
       if (hasBusted) {
-        setIsnewRound(true);
-
-        //console.log("Busted!" + playersRound);
-        toggleBustScreen();
+        setIsnewRound(true)
       }
+
+        updateJustScored(false);
+      }); // closes onNewDice arrow body + closes addStateChateCallBack("onNewDice", ...) call
 
       clientConn.addStateChangeCallback("newRoundStart", () => {// sets isnewRound to false if the rolled that triggered it was starting a new round
         setIsnewRound(false);
@@ -380,12 +393,13 @@ export function Game({ clientConn }) {
         updatePlayerScores(newPlayerScores);
 
 
+        updateJustScored(true);
         updateRoundScore(0);// prepare round score back to 0
         setBankedDice(newBankedDice);// prepare bankedDice blank
 
       }); // closes returnHandleScore callback
 
-    }); // closes onNewDice arrow body + closes addStateChateCallBack("onNewDice", ...) call
+    
 
     clientConn.addStateChangeCallback('gameSetPlayerNames', (playerNames)=>{
       setP1Name(playerNames[0]);
@@ -1005,6 +1019,27 @@ function changeDieLocation(die, newX, newY) // die you want to find
     }
       
   }
+
+  const [justScored, updateJustScored] = useState(false);
+  function displayBankBox()
+  {
+    if(hasBusted)
+      return "BUST";
+    else if(justScored)
+      return "SCORE";
+    else
+      return roundScore;
+  }
+
+  function getBankBoxTextColor()
+  {
+    if(hasBusted)
+      return '#cf3216ec'
+    else if(justScored)
+      return '#1ef8c9cb'
+    else
+      return '#f1a50ccc'
+  }
   return (
     
     <div style={{
@@ -1052,17 +1087,17 @@ function changeDieLocation(die, newX, newY) // die you want to find
             {/*Player 1 */}
             <svg viewBox='0 0 100 50' width='40%' style={{ width: `${getWidth(37)}px` }}>
               <path d={wobblyOval(50, 25, 50, 20, 20, 0.7, 1)} fill='#131f1d' stroke='#0407062d' />
-              <text x='50' y='25' textAnchor='middle' dominantBaseline='middle'
-                fontSize='40%' fill='#d2ceddfb' fontFamily="'Press Start 2P'">
+              <text x='50' y={getHeight(3.5)}  textAnchor='middle' dominantBaseline='middle'
+                fontSize='35%' fill='#d2ceddfb' fontFamily="'Press Start 2P'">
                 {renderPoppingText(`${p1Name}: ${playerScores[0]}`, lastScoreChangeTime.current[0])}
               </text>
             </svg>
 
-            {/*Player 2 */}
+            {/*Player 2 */} {/*TO DO: Fix slight clipping on this svg oval (play with input vals) */}
             <svg viewBox='0 0 100 50' width='40%' style={{ width: `${getWidth(37)}px` }}>
               <path d={wobblyOval(50, 25, 50, 20, 17, 0.5, 2)} fill='#131f1d' stroke='#0407062d' />
-              <text x='50' y='25' textAnchor='middle' dominantBaseline='middle'
-                fontSize='40%' fill='#d2ceddfb' fontFamily="'Press Start 2P'">
+              <text x='50' y= {getHeight(3.5)} textAnchor='middle' dominantBaseline='middle'
+                fontSize='35%' fill='#d2ceddfb' fontFamily="'Press Start 2P'">
                 {renderPoppingText(`${p2Name}: ${playerScores[1]}`, lastScoreChangeTime.current[1])}
               </text>
             </svg>
@@ -1098,8 +1133,8 @@ function changeDieLocation(die, newX, newY) // die you want to find
                   <path d={zigZagOval(80, 70, 68, 33, 16, time, .5)} stroke='#080705d5' strokeWidth='.5' fill='none' />
                   <path d={zigZagOval(80, 70, 61, 31, 16, time, .5)} stroke='#9c9c9ca8' strokeWidth='.5' fill='none' />
                   <text x={textBtnSway(80, time, .5)} y='70' textAnchor='middle' dominantBaseline='middle'
-                    fontSize='75%' fill='#f1a50ccc' fontWeight='1' fontFamily="'Press Start 2P'">
-                    {roundScore}
+                    fontSize='75%' fill= {getBankBoxTextColor()} fontWeight='1' fontFamily="'Press Start 2P'">
+                    {displayBankBox()}
                   </text>
                 </svg>
               </div>
@@ -1187,9 +1222,9 @@ function changeDieLocation(die, newX, newY) // die you want to find
                     color: hasRolled == false ? '#32cfb0' : '#61998e8a',
                     animation: hasRolled == false ? 'textGlowRoll 4s ease-out forwards' : hasBeenAvailableRoll.current ? 'textGlowRollOut 4s ease-out forwards' : 'none'
                   }}
-                    onPointerDown={() => setRollButtonPressed(true)}
+                    onPointerDown={() => {setRollButtonPressed(true); clientConn.socket.emit('clientRollButtonPressed', true);}}
                     onPointerUp={() => {
-                      setRollButtonPressed(false);
+                      setRollButtonPressed(false); clientConn.socket.emit('clientRollButtonPressed', false);
                       if ((hasRolled == false) && (playersRound == playerNumber)) reRollDice();
                     }}
                     
@@ -1225,8 +1260,9 @@ function changeDieLocation(die, newX, newY) // die you want to find
 
                   animation: ((roundScore > 0) && !hasBusted && (playersRound == playerNumber) && (hasRolled == false)) ? 'textGlowRoundScore 5s ease-out forwards' : hasBeenAvailableScore.current ? 'textGlowRoundScoreOut 3s ease-out forwards' : 'none'// anmiation shadow controlled in index.css, 1s is the number of seconds, you can make it larger or smaller, forwards means keep the animation style
                 }}
-                  onPointerDown={() => setEndRoundButtonPressed(true)}
+                  onPointerDown={() => {setEndRoundButtonPressed(true); clientConn.socket.emit('clientEndRoundButtonPressed', true);}}
                   onPointerUp ={() => {
+                    clientConn.socket.emit('clientEndRoundButtonPressed', false);
                     setEndRoundButtonPressed(false);
                     if ((roundScore > 0) && !hasBusted && (playersRound == playerNumber) && (hasRolled == false)) handleEndRound();
                   }}

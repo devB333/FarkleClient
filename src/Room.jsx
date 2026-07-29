@@ -38,6 +38,8 @@ export function Room({clientConn})
         return newDice;
     });
 
+
+    //TO DO: Handle room disconnect errors and force rerouting if stale room
     useEffect(() => {
       clientConn.addStateChangeCallback("roomInfo", (playerNames, roomCode) =>{
         setRoomCode(roomCode);// this will set the room code from the server

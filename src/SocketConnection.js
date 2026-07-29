@@ -16,6 +16,14 @@ export class Client{
             this.stateChangeCallbacks.onBankButtonPressed(state);
          });// end socket.on function
 
+         this.socket.on('rollButtonPressedServer', (state)=>{
+            this.stateChangeCallbacks.onRollButtonPressed(state);
+         });
+
+         this.socket.on('endRoundButtonPressedServer', (state)=>{
+            this.stateChangeCallbacks.onEndRoundButtonPressed(state);
+         });
+
          this.socket.on('newDice', (data) =>{// general purpose new dice handler used for both rerolls and syncing dice selection because they both remake and send the whole dice array. Selected dice ui uses die.selected var
             this.stateChangeCallbacks.onNewDice(data.dice, data.pendingScore, data.hasRolled, data.hasBusted, data.playersRound);
          });// end newDice update function
