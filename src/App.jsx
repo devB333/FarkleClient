@@ -17,10 +17,20 @@ function App()
 
   const client = useRef(null);
   const socket = useRef(null);
+  
+  let sessionID = localStorage.getItem('sessionID'); // was sessionStorage
+  if (!sessionID) {
+  sessionID =  Date.now().toString(36) +
+        Math.random().toString(36).slice(2); //crypto.randomUUID()
+  localStorage.setItem('sessionID', sessionID); // was sessionStorage
+}
+
 
   if(!socket.current)
   {                           // for running on localHost machine: localHost:3000
-      socket.current = io("http://10.0.0.189:3000") //for testing with phone over local neetwrok: http://10.0.0.189:3000
+      socket.current = io("http://10.0.0.189:3000",{
+        auth: {sessionID: sessionID}
+      }) //for testing with phone over local neetwrok: http://10.0.0.189:3000
      client.current = new Client(socket.current);// end client constructor
   }
 

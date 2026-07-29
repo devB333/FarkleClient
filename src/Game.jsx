@@ -4,7 +4,10 @@ import UpdateSelected from './ScoreBoard.jsx'
 import { Client } from './SocketConnection.js'
 import {SmokeBackground} from './Background.jsx'
 import { WinGamePopUp } from './WinGamePopUp.jsx'
+import { DisconnectPopUp } from './PlayerDisconnect.jsx'
 import './App.css'
+import { data } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export function Game({ clientConn }) {
   const [playerNumber, updatePlayerNumber] = useState(0);// number that the player is, makes it eaiser to idenitfy them, will be passed after they join the room
@@ -15,6 +18,7 @@ export function Game({ clientConn }) {
   const INTERNAL_CANVAS_WIDTH = 500;
   const INTERNAL_CANVAS_HEIGHT = 281; // 500 * 9/16 ≈ 281, matches 16:9
 
+  const navigate = useNavigate();
 
   const GAME_WIDTH = 400;
   const GAME_HEIGHT = 750; // whatever size everything currently "looks right" at
@@ -422,14 +426,46 @@ export function Game({ clientConn }) {
       setWinGameObj(null);
       
     });
-    
-    clientConn.emitGameStart();// start the game
+
+    clientConn.socket.emit('requestRejoin', (response) => {
+    if (response.rejoined) {
+      updatePlayerNumber(response.data.playerNumber);
+      setP1Name(response.data.playerNames[0]);
+      setP2Name(response.data.playerNames[1]);
+      updatePlayerScores([response.data.playerOneScore, response.data.playerTwoScore]);
+      updatePlayersRound(response.data.playersRound);
+      updateHasRolled(response.data.hasRolled);
+      updateDice(response.data.dice);
+      setBankedDice(response.data.bankedDice);
+      updateHasBusted(response.data.hasBusted);
+      updateRoundScore(response.data.roundScore);
+      newPendingScore(response.data.pendingScore);
+      isNewRound(response.data.isNewRound);
+      
+    } else {
+      clientConn.emitGameStart(); // genuinely new — proceed as normal
+    }});
+
+    clientConn.socket.on('showDisconnectScreen', (response)=>{
+      updateDisconShow(response);
+      console.log("Should be showing: "+ response);
+    });
+
+    clientConn.socket.on('fullDisconn', ()=>{
+      navigate('/');
+    });
+
   }, []); // closes useEffect arrow body + closes useEffect(...) call
 
 
+  const [showDisconn, updateDisconShow] = useState(false);// only show disconnection screen if waiting.
   const [winGameObj, setWinGameObj] = useState(null);
   
 
+  function disconnCheck(){
+    if (showDisconn)
+      return <DisconnectPopUp/>;
+  }
   // this is what increments time and keeps track of the current ref frame
   useEffect(() => {
 
@@ -981,7 +1017,9 @@ function changeDieLocation(die, newX, newY) // die you want to find
       background: '#093c50' // letterbox bars, change to taste
     }}>
       <SmokeBackground/>
+      {disconnCheck()}
       {checkWinGamePopUp()}
+      
       <div style={{
         width: GAME_WIDTH,
         height: GAME_HEIGHT,

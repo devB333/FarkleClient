@@ -271,6 +271,14 @@ html, body {
   color: ghostWhite;
 }
 
+.LobbyBtns:active {
+  transform: translateY(2px);
+  border-top-color: #11302A;
+  border-left-color: #11302A;
+  border-right-color: #318375;
+  border-bottom-color: #318375;
+}
+
 .curveBorder{
   border-radius: 100px;
   
@@ -306,6 +314,45 @@ html, body {
     animation: firstAppear 0.4s ease forwards, flicker 0.9s infinite;
 
     font-size: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+    border-top: 15px solid #022e25c9;
+    border-left: 15px solid #022e25c9;
+    border-right: 15px solid #070606d3;
+    border-bottom: 15px solid #070606d3;
+
+    border-radius: 10px;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+}
+
+.dissConPop{
+  background-color: #08060d;
+  position: absolute;
+  top: 35dvh;
+  left: 50dvw;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 95dvw;
+  padding: 10%;
+  opacity: 75%;
+  font-family: "Press Start 2P";
+  transform-origin: center center;
+    color: #e6af43;
+    text-shadow:
+        2px 0px #000,
+        -2px 0px #000,
+        0px 2px #000,
+        0px -2px #000;
+
+    animation: firstAppear 0.4s ease forwards, flicker 0.9s infinite;
+
+    font-size: 1rem;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -392,3 +439,22 @@ html, body, #root {
   border-radius: 999px;
 }
 
+.spinner{
+   animation: rotate 1.5s ease-in-out infinite;
+   margin: 0 auto;
+}
+
+@keyframes rotate {
+  0% {
+     transform: rotate(0deg); 
+     scale: 0.7;
+    }
+
+    50%{
+      scale: 1;
+    }
+  100%   {
+     transform: rotate(360deg); 
+     scale: 0.7;
+    }
+}

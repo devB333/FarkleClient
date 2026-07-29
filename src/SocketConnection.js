@@ -3,8 +3,9 @@ export class Client{
      constructor(socket){// always must use this.socket for everything and every function
         this.socket = socket;
         this.stateChangeCallbacks = {};// state change callbacks is a list of call backs that contain state change objects to be used when the server needs to make a state change, the list is made in App.jsx
-        
-         this.connected();
+        this.socketID = null;
+
+         //this.connected();
 
 
          this.socket.on('setPlayerNum', (playerNum) => {
@@ -42,6 +43,11 @@ export class Client{
          this.socket.on('newGameStart', (playerScores)=>{
             this.stateChangeCallbacks.newGameStart(playerScores);
          });
+
+         this.socket.on('rejoined', (data)=>{
+            this.stateChangeCallbacks.rejoined(data);
+         })
+
          //__________________________________________________________ lobby functions below
          this.socket.on('moveToRoom',()=>{
             this.stateChangeCallbacks.moveToRoom();
@@ -67,8 +73,9 @@ export class Client{
      
       connected()
      {
-        this.socket.on("connect", ()=>{
+        this.socket.on("connect", (socketID)=>{
             console.log(this.socket.id);
+            this.socketID = socketID;
         })
      }
 

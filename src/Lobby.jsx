@@ -32,6 +32,13 @@ export function Lobby({clientConn})
 
 
     useEffect(()=>{
+      clientConn.socket.emit('requestRejoin', (response) =>{
+        if(response.rejoined)
+          navigate('/game');
+
+        console.log("This is response "+ response.rejoined);
+      });
+
       clientConn.addStateChangeCallback('moveToRoom', ()=>{
         
         navigate("/room");
