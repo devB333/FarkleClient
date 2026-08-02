@@ -28,7 +28,7 @@ function App()
 
   if(!socket.current)
   {                           // for running on localHost machine: localHost:3000
-    const socketUrl = io(import.meta.env.VITE_SOCKET_URL);
+    const socketUrl = import.meta.env.VITE_SOCKET_URL;
       socket.current = io(socketUrl,{
         auth: {sessionID: sessionID}
       }) //for testing with phone over local neetwrok: http://10.0.0.189:3000
