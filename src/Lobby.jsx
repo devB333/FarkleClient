@@ -178,12 +178,27 @@ const scoreToWin = useRef();
 
 function handleCreateRoom()// TO DO: Handle invalid input and change state to display so, ie. if a player is creating a lobby dont let them input a roomCode and ensure they have a name and a score to win
 {
+  const pName = playerName.current.value;
+
+  if(!(Number.isInteger(Number(scoreToWin.current.value))) || (pName == '') || (pName.length > 8))
+  {
+    alert("Make sure you have a valid score to win, and valid name!");
+    playerName.current = '';
+    scoreToWin.current = '';
+    return;
+  }
   //console.log("sentOver");
   clientConn.joinRoom("",playerName.current.value, scoreToWin.current.value);
 }
 
 function handleJoinRoom()
 {
+  const pName = playerName.current.value;
+  const room = roomCode.current.value;
+  const winScore = scoreToWin.current.value;
+
+  //add error handling here
+
   clientConn.joinRoom(roomCode.current.value, playerName.current.value,"");
   console.log("Sent over " + playerName.current.value)
 }
