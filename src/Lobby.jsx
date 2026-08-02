@@ -183,8 +183,8 @@ function handleCreateRoom()// TO DO: Handle invalid input and change state to di
   if(!(Number.isInteger(Number(scoreToWin.current.value))) || (pName == '') || (pName.length > 8))
   {
     alert("Make sure you have a valid score to win, and valid name!");
-    playerName.current = '';
-    scoreToWin.current = '';
+    playerName.current.value = '';
+    scoreToWin.current.value = '';
     return;
   }
   //console.log("sentOver");
