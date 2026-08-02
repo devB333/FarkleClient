@@ -180,7 +180,7 @@ function handleCreateRoom()// TO DO: Handle invalid input and change state to di
 {
   const pName = playerName.current.value;
 
-  if(!(Number.isInteger(Number(scoreToWin.current.value))) || (pName == '') || (pName.length > 8))
+  if(!(Number.isInteger(Number(scoreToWin.current.value))) || (pName == '') || (pName.length > 8) || (scoreToWin.current.value == ''))
   {
     alert("Make sure you have a valid score to win, and valid name!");
     playerName.current.value = '';
@@ -197,7 +197,7 @@ function handleJoinRoom()
   const room = roomCode.current.value;
   const winScore = scoreToWin.current.value;
 
-  //add error handling here
+  //TO DO: add error handling here
 
   clientConn.joinRoom(roomCode.current.value, playerName.current.value,"");
   console.log("Sent over " + playerName.current.value)
